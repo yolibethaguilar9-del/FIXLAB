@@ -1,0 +1,3508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FIXLAB X — Laboratorio de Reparación</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#070b12;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    min-height:70px;
+    background:#101827;
+    border-bottom:2px solid #26384f;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px 18px;
+    gap:15px;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.logo span{
+    color:#20d8ff;
+}
+
+.stats{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.stat{
+    background:#182538;
+    border:1px solid #334863;
+    border-radius:9px;
+    padding:8px 12px;
+    font-weight:bold;
+}
+
+.screen{
+    display:none;
+    max-width:1250px;
+    margin:auto;
+    padding:22px;
+}
+
+.screen.active{
+    display:block;
+}
+
+h1{
+    margin-top:0;
+}
+
+.subtitle{
+    color:#9eafc5;
+}
+
+.btn{
+    border:0;
+    background:#24364d;
+    color:#fff;
+    padding:11px 16px;
+    border-radius:9px;
+    font-weight:bold;
+    margin:4px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.primary{
+    background:#1bc8eb;
+    color:#001018;
+}
+
+.success{
+    background:#27c76f;
+    color:#03150a;
+}
+
+.warning{
+    background:#e6a51b;
+    color:#1b1100;
+}
+
+.danger{
+    background:#d94a4a;
+}
+
+/* =========================
+   TALLER
+========================= */
+
+.workshop{
+    height:570px;
+    position:relative;
+    overflow:hidden;
+    border:3px solid #2d4059;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            #172338 0 65%,
+            #101720 65%
+        );
+    box-shadow:0 20px 70px #0008;
+}
+
+.wall{
+    position:absolute;
+    inset:0 0 35% 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 79px,
+            #ffffff08 80px 81px
+        );
+}
+
+.window{
+    position:absolute;
+    left:30px;
+    top:30px;
+    width:210px;
+    height:120px;
+    background:linear-gradient(
+        135deg,
+        #0d2845,
+        #24bfe9
+    );
+    border:10px solid #465364;
+}
+
+.window:before{
+    content:"";
+    position:absolute;
+    width:8px;
+    height:100%;
+    left:50%;
+    background:#465364;
+}
+
+.window:after{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:8px;
+    top:50%;
+    background:#465364;
+}
+
+.shelf{
+    position:absolute;
+    right:30px;
+    top:30px;
+    width:270px;
+    height:160px;
+    background:#623c25;
+    border:7px solid #352217;
+}
+
+.shelf span{
+    position:absolute;
+    font-size:34px;
+}
+
+.s1{left:20px;top:15px}
+.s2{left:90px;top:15px}
+.s3{left:165px;top:15px}
+.s4{left:50px;top:85px}
+.s5{left:190px;top:85px}
+
+.desk{
+    position:absolute;
+    left:12%;
+    right:12%;
+    bottom:110px;
+    height:85px;
+    background:#684125;
+    border:7px solid #392419;
+}
+
+.desk:before,
+.desk:after{
+    content:"";
+    position:absolute;
+    bottom:-110px;
+    width:20px;
+    height:110px;
+    background:#372217;
+}
+
+.desk:before{left:20px}
+.desk:after{right:20px}
+
+.monitor{
+    position:absolute;
+    left:50%;
+    bottom:205px;
+    transform:translateX(-50%);
+    width:180px;
+    height:115px;
+    background:#080c12;
+    border:10px solid #273343;
+    border-radius:8px;
+}
+
+.toolbox{
+    position:absolute;
+    right:17%;
+    bottom:155px;
+    font-size:55px;
+}
+
+.deviceObject{
+    position:absolute;
+    left:50%;
+    bottom:205px;
+    transform:translateX(-50%);
+    font-size:68px;
+    animation:float 1.5s infinite;
+}
+
+@keyframes float{
+    50%{
+        transform:
+        translateX(-50%)
+        translateY(-8px);
+    }
+}
+
+.character{
+    position:absolute;
+    width:50px;
+    height:70px;
+    transition:.08s;
+    z-index:20;
+}
+
+.head{
+    position:absolute;
+    top:0;
+    left:10px;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#e2a574;
+}
+
+.body{
+    position:absolute;
+    top:27px;
+    left:5px;
+    width:40px;
+    height:38px;
+    border-radius:9px;
+    background:#1bc8eb;
+}
+
+.leg{
+    position:absolute;
+    bottom:-8px;
+    width:11px;
+    height:20px;
+    background:#202936;
+}
+
+.l1{left:9px}
+.l2{right:9px}
+
+.interaction{
+    position:absolute;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#08111c;
+    border:2px solid #20d8ff;
+    border-radius:12px;
+    padding:12px;
+    display:none;
+    text-align:center;
+    z-index:50;
+}
+
+.controls{
+    display:grid;
+    grid-template-columns:55px 55px 55px;
+    gap:6px;
+    justify-content:center;
+    margin-top:10px;
+}
+
+.controls button{
+    height:50px;
+    border:1px solid #3b506d;
+    background:#17253a;
+    color:#fff;
+    border-radius:9px;
+    font-size:20px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+    background:#111b2a;
+    border:1px solid #30445e;
+    border-radius:17px;
+    padding:20px;
+    margin-bottom:18px;
+}
+
+.caseTop{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.bigIcon{
+    font-size:75px;
+}
+
+.info{
+    background:#09111c;
+    padding:15px;
+    border-radius:11px;
+    line-height:1.6;
+    margin:15px 0;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(210px,1fr));
+    gap:10px;
+}
+
+.option{
+    background:#18263b;
+    border:1px solid #39516d;
+    color:#fff;
+    padding:15px;
+    border-radius:11px;
+    text-align:left;
+}
+
+.option:hover{
+    border-color:#20d8ff;
+}
+
+/* =========================
+   INVENTARIO
+========================= */
+
+.inventory{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(170px,1fr));
+    gap:12px;
+}
+
+.material{
+    background:#18263a;
+    border:1px solid #364e6a;
+    border-radius:12px;
+    padding:15px;
+    text-align:center;
+}
+
+.material .icon{
+    font-size:35px;
+}
+
+/* =========================
+   INTERIOR
+========================= */
+
+.deviceInterior{
+    position:relative;
+    width:min(850px,100%);
+    height:430px;
+    margin:20px auto;
+    background:
+        radial-gradient(
+            circle at center,
+            #183e45,
+            #08131a 70%
+        );
+    border:8px solid #374554;
+    border-radius:30px;
+    box-shadow:
+        inset 0 0 60px #000,
+        0 15px 50px #000;
+}
+
+.internalPart{
+    position:absolute;
+    padding:10px;
+    border:2px solid #4b6a7c;
+    background:#162934;
+    border-radius:9px;
+    text-align:center;
+    min-width:100px;
+    transition:.2s;
+}
+
+.internalPart:hover{
+    transform:scale(1.08);
+    border-color:#20d8ff;
+    background:#173a48;
+}
+
+.internalPart.selected{
+    border-color:#28d76f;
+    box-shadow:0 0 20px #28d76f55;
+}
+
+.partIcon{
+    font-size:35px;
+}
+
+.partName{
+    font-size:12px;
+    font-weight:bold;
+}
+
+.p1{left:5%;top:12%}
+.p2{left:38%;top:8%}
+.p3{right:5%;top:15%}
+.p4{left:7%;bottom:12%}
+.p5{left:40%;bottom:10%}
+.p6{right:7%;bottom:12%}
+.p7{left:42%;top:42%}
+
+/* =========================
+   MINIJUEGO
+========================= */
+
+.progress{
+    height:22px;
+    background:#1d2a3b;
+    border-radius:20px;
+    overflow:hidden;
+    margin:15px 0;
+}
+
+.progress div{
+    width:0%;
+    height:100%;
+    background:#20d8ff;
+    transition:.2s;
+}
+
+.screwGrid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(100px,1fr));
+    gap:10px;
+}
+
+.screw{
+    height:75px;
+    background:#19283b;
+    color:#fff;
+    border:2px solid #415873;
+    border-radius:11px;
+}
+
+.screw.done{
+    opacity:.3;
+}
+
+/* =========================
+   ASSEMBLY
+========================= */
+
+.assembly{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(145px,1fr));
+    gap:12px;
+}
+
+.slot{
+    min-height:120px;
+    border:3px dashed #40566e;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:10px;
+}
+
+.slot.over{
+    border-color:#20d8ff;
+    background:#102e3b;
+}
+
+.slot.ok{
+    border-color:#28d76f;
+    border-style:solid;
+}
+
+.dragParts{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(145px,1fr));
+    gap:12px;
+    margin:15px 0;
+}
+
+.dragPart{
+    padding:15px;
+    background:#18263a;
+    border:2px solid #38506d;
+    border-radius:12px;
+    text-align:center;
+    cursor:grab;
+}
+
+/* =========================
+   PRUEBAS
+========================= */
+
+.test{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    background:#18263a;
+    border:1px solid #38516c;
+    border-radius:11px;
+    padding:15px;
+    margin:9px 0;
+}
+
+.test.ok{
+    border-color:#28d76f;
+}
+
+/* =========================
+   MAPA
+========================= */
+
+.levelMap{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fill,minmax(52px,1fr));
+    gap:6px;
+}
+
+.level{
+    height:45px;
+    background:#18263a;
+    border:1px solid #344b67;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.level.done{
+    background:#145333;
+}
+
+.level.current{
+    border:2px solid #20d8ff;
+}
+
+/* =========================
+   CARRERA
+========================= */
+
+#raceCanvas{
+    width:100%;
+    max-width:900px;
+    height:auto;
+    border:3px solid #344d68;
+    border-radius:15px;
+    display:block;
+    margin:auto;
+    background:#111;
+}
+
+.raceHud{
+    text-align:center;
+    margin-bottom:12px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#000c;
+    z-index:5000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modalBox{
+    width:min(850px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:#101a29;
+    border:2px solid #344d69;
+    border-radius:18px;
+    padding:22px;
+}
+
+.close{
+    float:right;
+    background:#27374c;
+    color:white;
+    border:0;
+    width:35px;
+    height:35px;
+    border-radius:7px;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#111d2c;
+    border:2px solid #20d8ff;
+    padding:15px 20px;
+    border-radius:11px;
+    z-index:9000;
+    display:none;
+    max-width:360px;
+}
+
+.toast.show{
+    display:block;
+}
+
+@media(max-width:700px){
+
+    header{
+        flex-direction:column;
+    }
+
+    .screen{
+        padding:12px;
+    }
+
+    .workshop{
+        height:500px;
+    }
+
+    .shelf{
+        width:150px;
+    }
+
+    .window{
+        width:140px;
+        height:90px;
+    }
+
+    .deviceInterior{
+        height:360px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+⚙️ FIX<span>LAB X</span>
+</div>
+
+<div class="stats">
+
+<div class="stat">
+🎯 Nivel:
+<span id="level">1</span>
+</div>
+
+<div class="stat">
+⭐ XP:
+<span id="xp">0</span>
+</div>
+
+<div class="stat">
+💰 $<span id="money">100</span>
+</div>
+
+<div class="stat">
+🏆 <span id="rank">Aprendiz</span>
+</div>
+
+<div class="stat">
+📦 Materiales:
+<span id="materialCount">0</span>
+</div>
+
+</div>
+
+</header>
+
+<!-- =========================
+     TALLER
+========================= -->
+
+<section
+id="workshopScreen"
+class="screen active">
+
+<h1>🔧 FIXLAB — Taller principal</h1>
+
+<p class="subtitle">
+Aquí comienza tu carrera como reparador tecnológico.
+</p>
+
+<div class="workshop">
+
+<div class="wall"></div>
+
+<div class="window"></div>
+
+<div class="shelf">
+
+<span class="s1">📱</span>
+<span class="s2">💻</span>
+<span class="s3">🎮</span>
+<span class="s4">📷</span>
+<span class="s5">🔊</span>
+
+</div>
+
+<div class="desk"></div>
+
+<div class="monitor"></div>
+
+<div class="toolbox">
+🧰
+</div>
+
+<div
+id="deviceObject"
+class="deviceObject">
+📱
+</div>
+
+<div
+id="character"
+class="character"
+style="left:47%;bottom:65px">
+
+<div class="head"></div>
+<div class="body"></div>
+<div class="leg l1"></div>
+<div class="leg l2"></div>
+
+</div>
+
+<div
+id="interaction"
+class="interaction">
+
+<b>
+🔍 DISPOSITIVO DEL CLIENTE
+</b>
+
+<br>
+
+<button
+class="btn primary"
+onclick="startCase()">
+
+REVISAR
+
+</button>
+
+</div>
+
+</div>
+
+<div class="controls">
+
+<button></button>
+
+<button
+onclick="move(0,-1)">
+⬆️
+</button>
+
+<button></button>
+
+<button
+onclick="move(-1,0)">
+⬅️
+</button>
+
+<button
+onclick="move(0,1)">
+⬇️
+</button>
+
+<button
+onclick="move(1,0)">
+➡️
+</button>
+
+</div>
+
+<p style="text-align:center;color:#8396ae">
+También puedes usar las flechas del teclado.
+</p>
+
+<div style="text-align:center">
+
+<button
+class="btn primary"
+onclick="openSupplyRace()">
+
+🏁 CARRERA DE SUMINISTROS
+
+</button>
+
+<button
+class="btn"
+onclick="openInventory()">
+
+🎒 INVENTARIO
+
+</button>
+
+<button
+class="btn"
+onclick="showMap()">
+
+🗺️ NIVELES
+
+</button>
+
+<button
+class="btn warning"
+onclick="resetGame()">
+
+♻️ REINICIAR
+
+</button>
+
+</div>
+
+</section>
+
+<!-- =========================
+     CASO
+========================= -->
+
+<section
+id="caseScreen"
+class="screen">
+
+<div id="caseContent"></div>
+
+</section>
+
+<!-- =========================
+     STAGE
+========================= -->
+
+<section
+id="stageScreen"
+class="screen">
+
+<div id="stageContent"></div>
+
+</section>
+
+<!-- =========================
+     MAPA
+========================= -->
+
+<section
+id="mapScreen"
+class="screen">
+
+<h1>🗺️ Mapa de niveles</h1>
+
+<p>
+500 niveles de reparación.
+</p>
+
+<div
+id="levelMap"
+class="levelMap">
+</div>
+
+<br>
+
+<button
+class="btn primary"
+onclick="goWorkshop()">
+
+🔧 VOLVER AL TALLER
+
+</button>
+
+</section>
+
+<!-- =========================
+     CARRERA
+========================= -->
+
+<section
+id="raceScreen"
+class="screen">
+
+<h1 style="text-align:center">
+🏁 CARRERA DE SUMINISTROS
+</h1>
+
+<div class="raceHud">
+
+<p>
+¡Consigue materiales para tu taller!
+</p>
+
+<h3>
+📦 Materiales:
+<span id="raceScore">0</span>/20
+</h3>
+
+<p>
+⬅️ ➡️ para moverte
+</p>
+
+</div>
+
+<canvas
+id="raceCanvas"
+width="900"
+height="500">
+</canvas>
+
+<div style="text-align:center">
+
+<br>
+
+<button
+class="btn"
+onclick="stopRace()">
+
+🚪 SALIR
+
+</button>
+
+</div>
+
+</section>
+
+<!-- =========================
+     MODAL
+========================= -->
+
+<div
+id="modal"
+class="modal">
+
+<div class="modalBox">
+
+<button
+class="close"
+onclick="closeModal()">
+
+✕
+
+</button>
+
+<div id="modalContent"></div>
+
+</div>
+
+</div>
+
+<div
+id="toast"
+class="toast">
+</div>
+
+<script>
+
+/* =========================================================
+   DISPOSITIVOS
+========================================================= */
+
+const DEVICES=[
+
+{
+name:"Teléfono",
+icon:"📱",
+parts:[
+["battery","🔋","Batería"],
+["board","🟩","Placa principal"],
+["screen","🖥️","Pantalla"],
+["camera","📷","Cámara"],
+["port","🔌","Puerto"],
+["speaker","🔊","Altavoz"]
+],
+tests:["Encendido","Carga","Pantalla","Cámara","Audio"]
+},
+
+{
+name:"Laptop",
+icon:"💻",
+parts:[
+["battery","🔋","Batería"],
+["board","🟩","Placa madre"],
+["ram","💾","RAM"],
+["ssd","💽","SSD"],
+["fan","🌀","Ventilador"],
+["screen","🖥️","Pantalla"],
+["keyboard","⌨️","Teclado"]
+],
+tests:["Encendido","RAM","SSD","Temperatura","Teclado"]
+},
+
+{
+name:"PC de escritorio",
+icon:"🖥️",
+parts:[
+["power","⚡","Fuente"],
+["board","🟩","Placa"],
+["cpu","🧠","Procesador"],
+["ram","💾","RAM"],
+["gpu","🎞️","Gráfica"],
+["storage","💽","Disco"],
+["fan","🌀","Ventilador"]
+],
+tests:["Fuente","CPU","RAM","Disco","Video"]
+},
+
+{
+name:"Consola",
+icon:"🎮",
+parts:[
+["power","⚡","Fuente"],
+["board","🟩","Placa"],
+["fan","🌀","Ventilador"],
+["hdmi","🔌","HDMI"],
+["storage","💾","Almacenamiento"],
+["drive","💿","Unidad"]
+],
+tests:["Encendido","HDMI","Temperatura","Almacenamiento","Control"]
+},
+
+{
+name:"Audífonos",
+icon:"🎧",
+parts:[
+["battery","🔋","Batería"],
+["board","🟩","Bluetooth"],
+["speaker","🔊","Parlantes"],
+["port","🔌","Puerto"],
+["mic","🎤","Micrófono"]
+],
+tests:["Batería","Bluetooth","Audio","Micrófono","Carga"]
+},
+
+{
+name:"Bocina Bluetooth",
+icon:"🔊",
+parts:[
+["battery","🔋","Batería"],
+["board","🟩","Placa"],
+["speaker","🔊","Parlante"],
+["amp","📢","Amplificador"],
+["port","🔌","Puerto"]
+],
+tests:["Encendido","Bluetooth","Audio","Volumen","Carga"]
+},
+
+{
+name:"Televisor",
+icon:"📺",
+parts:[
+["power","⚡","Fuente"],
+["board","🟩","Mainboard"],
+["screen","📺","Panel"],
+["led","💡","LED"],
+["speaker","🔊","Audio"],
+["hdmi","🔌","HDMI"]
+],
+tests:["Encendido","Imagen","LED","Audio","HDMI"]
+},
+
+{
+name:"Cámara",
+icon:"📷",
+parts:[
+["battery","🔋","Batería"],
+["lens","🔭","Lente"],
+["sensor","📡","Sensor"],
+["board","🟩","Placa"],
+["screen","🖥️","Pantalla"],
+["port","🔌","Puerto"]
+],
+tests:["Encendido","Lente","Imagen","Pantalla","Memoria"]
+},
+
+{
+name:"Smartwatch",
+icon:"⌚",
+parts:[
+["battery","🔋","Batería"],
+["screen","🖥️","Pantalla"],
+["board","🟩","Placa"],
+["sensor","📡","Sensor"],
+["port","🔌","Carga"],
+["motor","〰️","Vibrador"]
+],
+tests:["Batería","Táctil","Sensor","Vibración","Carga"]
+},
+
+{
+name:"Impresora",
+icon:"🖨️",
+parts:[
+["power","⚡","Fuente"],
+["board","🟩","Placa"],
+["roller","⚙️","Rodillos"],
+["head","🖊️","Cabezal"],
+["sensor","📡","Sensor papel"],
+["port","🔌","USB"]
+],
+tests:["Encendido","Papel","Impresión","Sensor","USB"]
+},
+
+{
+name:"Router",
+icon:"📡",
+parts:[
+["power","⚡","Fuente"],
+["board","🟩","Placa"],
+["antenna","📶","Antenas"],
+["port","🔌","Ethernet"],
+["memory","💾","Memoria"]
+],
+tests:["Encendido","WiFi","Ethernet","Internet","Señal"]
+},
+
+{
+name:"Cámara de seguridad",
+icon:"📹",
+parts:[
+["power","⚡","Fuente"],
+["sensor","📡","Sensor"],
+["lens","🔭","Lente"],
+["board","🟩","Placa"],
+["night","🌙","Infrarrojo"],
+["port","🔌","Red"]
+],
+tests:["Encendido","Imagen","Nocturna","Red","Grabación"]
+},
+
+{
+name:"Teclado",
+icon:"⌨️",
+parts:[
+["board","🟩","Placa"],
+["keys","🔤","Teclas"],
+["cable","🔌","Cable"],
+["controller","🧠","Controlador"],
+["led","💡","LED"]
+],
+tests:["USB","Teclas","Luces","Entrada","Controlador"]
+},
+
+{
+name:"Mouse",
+icon:"🖱️",
+parts:[
+["board","🟩","Placa"],
+["sensor","📡","Sensor"],
+["wheel","⚙️","Rueda"],
+["cable","🔌","Cable"],
+["buttons","🔘","Botones"]
+],
+tests:["USB","Movimiento","Rueda","Botones","Sensor"]
+},
+
+{
+name:"Proyector",
+icon:"📽️",
+parts:[
+["power","⚡","Fuente"],
+["lamp","💡","Lámpara"],
+["fan","🌀","Ventilador"],
+["board","🟩","Placa"],
+["lens","🔭","Lente"],
+["hdmi","🔌","HDMI"]
+],
+tests:["Encendido","Lámpara","Ventilación","Imagen","HDMI"]
+},
+
+{
+name:"Tablet",
+icon:"📱",
+parts:[
+["battery","🔋","Batería"],
+["board","🟩","Placa"],
+["screen","🖥️","Pantalla"],
+["camera","📷","Cámara"],
+["port","🔌","Puerto"],
+["speaker","🔊","Altavoz"]
+],
+tests:["Encendido","Táctil","Carga","Cámara","Audio"]
+},
+
+{
+name:"Power Bank",
+icon:"🔋",
+parts:[
+["cells","🔋","Celdas"],
+["board","🟩","Controlador"],
+["port","🔌","USB"],
+["led","💡","Indicador"],
+["button","🔘","Botón"]
+],
+tests:["Celdas","Salida","Indicador","Botón","Voltaje"]
+},
+
+{
+name:"Cargador",
+icon:"🔌",
+parts:[
+["board","🟩","Placa"],
+["transformer","⚡","Transformador"],
+["port","🔌","Puerto"],
+["cable","〰️","Cable"],
+["fuse","🛡️","Protección"]
+],
+tests:["Entrada","Salida","Carga","Temperatura","Protección"]
+}
+
+];
+
+/* =========================================================
+   MATERIALES
+========================================================= */
+
+const MATERIALS={
+
+screws:{
+icon:"🔩",
+name:"Tornillos"
+},
+
+cable:{
+icon:"〰️",
+name:"Cable"
+},
+
+thermal:{
+icon:"🌡️",
+name:"Pasta térmica"
+},
+
+alcohol:{
+icon:"🧴",
+name:"Alcohol"
+},
+
+solder:{
+icon:"🧪",
+name:"Soldadura"
+},
+
+connector:{
+icon:"🔌",
+name:"Conectores"
+},
+
+battery:{
+icon:"🔋",
+name:"Baterías"
+},
+
+brush:{
+icon:"🧹",
+name:"Cepillos"
+},
+
+fuse:{
+icon:"🛡️",
+name:"Fusibles"
+},
+
+led:{
+icon:"💡",
+name:"LED"
+},
+
+glue:{
+icon:"🧴",
+name:"Adhesivo"
+},
+
+screen:{
+icon:"🖥️",
+name:"Pantallas"
+}
+
+};
+
+/* =========================================================
+   INVENTARIO
+========================================================= */
+
+let inventory=
+JSON.parse(
+localStorage.getItem("FIXLAB_MATERIALS")
+)||{
+
+screws:8,
+cable:3,
+thermal:2,
+alcohol:3,
+solder:2,
+connector:3,
+battery:2,
+brush:3,
+fuse:1,
+led:1,
+glue:1,
+screen:1
+
+};
+
+/* =========================================================
+   PROGRESO
+========================================================= */
+
+let level=
+Number(
+localStorage.getItem("FIXLAB_LEVEL")
+)||1;
+
+let xp=
+Number(
+localStorage.getItem("FIXLAB_XP")
+)||0;
+
+let money=
+Number(
+localStorage.getItem("FIXLAB_MONEY")
+)||100;
+
+let currentCase=null;
+
+let player={
+x:47,
+y:65
+};
+
+let removed=[];
+
+let screws=0;
+
+let repairProgress=0;
+
+let placed=[];
+
+let tests=[];
+
+let selectedPart=null;
+
+/* =========================================================
+   GUARDAR
+========================================================= */
+
+function save(){
+
+localStorage.setItem(
+"FIXLAB_LEVEL",
+level
+);
+
+localStorage.setItem(
+"FIXLAB_XP",
+xp
+);
+
+localStorage.setItem(
+"FIXLAB_MONEY",
+money
+);
+
+localStorage.setItem(
+"FIXLAB_MATERIALS",
+JSON.stringify(inventory)
+);
+
+updateStats();
+
+}
+
+function updateStats(){
+
+document.getElementById("level").textContent=
+Math.min(level,500);
+
+document.getElementById("xp").textContent=xp;
+
+document.getElementById("money").textContent=money;
+
+let total=0;
+
+Object.values(inventory)
+.forEach(x=>total+=x);
+
+document.getElementById(
+"materialCount"
+).textContent=total;
+
+let rank="Aprendiz";
+
+if(xp>=1000)
+rank="Técnico";
+
+if(xp>=3000)
+rank="Especialista";
+
+if(xp>=6000)
+rank="Ingeniero";
+
+if(xp>=10000)
+rank="Maestro";
+
+if(xp>=18000)
+rank="Leyenda";
+
+document.getElementById(
+"rank"
+).textContent=rank;
+
+}
+
+/* =========================================================
+   CASOS
+========================================================= */
+
+const FAILURES=[
+
+"No enciende",
+"No carga",
+"Se apaga solo",
+"Se sobrecalienta",
+"No hay imagen",
+"Sin sonido",
+"Conexión inestable",
+"Botones no responden",
+"No reconoce memoria",
+"Imagen defectuosa",
+"Puerto dañado",
+"Batería agotada"
+
+];
+
+function generateCase(n){
+
+let device=
+DEVICES[
+Math.floor((n-1)/3)%DEVICES.length
+];
+
+let failure=
+FAILURES[
+(n*7)%FAILURES.length
+];
+
+let difficulty=
+Math.min(
+10,
+Math.floor((n-1)/50)+1
+);
+
+let count=
+Math.min(
+device.parts.length,
+3+Math.floor(difficulty/2)
+);
+
+let parts=
+[...device.parts]
+.sort(()=>Math.random()-.5)
+.slice(0,count);
+
+let disassembly=
+parts
+.map(p=>p[0])
+.sort(()=>Math.random()-.5);
+
+let assembly=
+[...disassembly].reverse();
+
+let multiple=
+difficulty>=4 && n%3===0;
+
+let secondFailure=
+multiple
+?
+FAILURES[
+(n*11)%FAILURES.length
+]
+:null;
+
+return{
+
+number:n,
+device,
+failure,
+secondFailure,
+difficulty,
+parts,
+disassembly,
+assembly,
+target:
+parts[n%parts.length],
+rewardXP:
+50+difficulty*20,
+rewardMoney:
+40+difficulty*20
+
+};
+
+}
+
+/* =========================================================
+   TALLER
+========================================================= */
+
+function setupWorkshop(){
+
+let c=
+generateCase(level);
+
+document.getElementById(
+"deviceObject"
+).textContent=
+c.device.icon;
+
+checkInteraction();
+
+}
+
+function move(dx,dy){
+
+player.x+=dx*3;
+player.y+=dy*3;
+
+player.x=
+Math.max(
+5,
+Math.min(
+90,
+player.x
+)
+);
+
+player.y=
+Math.max(
+10,
+Math.min(
+90,
+player.y
+)
+);
+
+let c=
+document.getElementById(
+"character"
+);
+
+c.style.left=
+player.x+"%";
+
+c.style.bottom=
+player.y+"px";
+
+checkInteraction();
+
+}
+
+function checkInteraction(){
+
+let show=
+player.x>35 &&
+player.x<60 &&
+player.y>45 &&
+player.y<90;
+
+document.getElementById(
+"interaction"
+).style.display=
+show?"block":"none";
+
+}
+
+document.addEventListener(
+"keydown",
+e=>{
+
+if(e.key==="ArrowUp")
+move(0,-1);
+
+if(e.key==="ArrowDown")
+move(0,1);
+
+if(e.key==="ArrowLeft")
+move(-1,0);
+
+if(e.key==="ArrowRight")
+move(1,0);
+
+});
+
+/* =========================================================
+   INICIAR CASO
+========================================================= */
+
+function startCase(){
+
+currentCase=
+generateCase(level);
+
+removed=[];
+screws=0;
+repairProgress=0;
+placed=[];
+tests=[];
+
+showScreen("caseScreen");
+
+renderInterview();
+
+}
+
+/* =========================================================
+   ENTREVISTA
+========================================================= */
+
+function renderInterview(){
+
+let c=currentCase;
+
+document.getElementById(
+"caseContent"
+).innerHTML=`
+
+<div class="card">
+
+<div class="caseTop">
+
+<div>
+
+<h1>
+📋 Caso #${String(c.number).padStart(3,"0")}
+</h1>
+
+<h2>
+${c.device.icon}
+${c.device.name}
+</h2>
+
+</div>
+
+<div class="bigIcon">
+${c.device.icon}
+</div>
+
+</div>
+
+<div class="info">
+
+👤 <b>Cliente:</b> María
+
+<br>
+
+💬 <b>Problema:</b>
+"Mi dispositivo presenta un problema y necesito
+que averigües qué está fallando."
+
+<br><br>
+
+🎯 <b>Dificultad:</b>
+${"★".repeat(c.difficulty)}
+${"☆".repeat(10-c.difficulty)}
+
+</div>
+
+<h2>
+🗣️ Entrevista
+</h2>
+
+<div class="options">
+
+<button
+class="option"
+onclick="question(1)">
+¿Cuándo comenzó?
+</button>
+
+<button
+class="option"
+onclick="question(2)">
+¿Qué ocurrió antes?
+</button>
+
+<button
+class="option"
+onclick="question(3)">
+¿Recibió algún golpe?
+</button>
+
+<button
+class="option"
+onclick="question(4)">
+¿Se calentaba?
+</button>
+
+<button
+class="option"
+onclick="question(5)">
+¿Ya intentaron repararlo?
+</button>
+
+</div>
+
+<div id="answers"></div>
+
+</div>
+
+`;
+
+}
+
+function question(q){
+
+let answers=[
+
+"Comenzó hace unos días y cada vez ocurre con mayor frecuencia.",
+
+"El problema apareció después de utilizarlo durante bastante tiempo.",
+
+"El cliente dice que no recuerda ningún golpe fuerte.",
+
+"Sí, últimamente se calentaba más de lo normal.",
+
+"No, nadie había abierto el dispositivo."
+
+];
+
+document.getElementById(
+"answers"
+).innerHTML=`
+
+<div class="info">
+
+👤 <b>Cliente:</b>
+
+<br>
+
+${answers[q-1]}
+
+</div>
+
+<button
+class="btn primary"
+onclick="diagnose()">
+
+🔎 REALIZAR DIAGNÓSTICO
+
+</button>
+
+`;
+
+}
+
+/* =========================================================
+   DIAGNÓSTICO
+========================================================= */
+
+function diagnose(){
+
+let c=currentCase;
+
+let wrong=
+FAILURES[
+(FAILURES.indexOf(c.failure)+3)
+%FAILURES.length
+];
+
+let wrong2=
+FAILURES[
+(FAILURES.indexOf(c.failure)+6)
+%FAILURES.length
+];
+
+document.getElementById(
+"caseContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🧠 Diagnóstico
+</h1>
+
+<p>
+Antes de abrir el dispositivo,
+¿cuál crees que es la falla?
+</p>
+
+<div class="options">
+
+<button
+class="option"
+onclick="chooseDiagnosis('${c.failure}')">
+
+🔎 ${c.failure}
+
+</button>
+
+<button
+class="option"
+onclick="chooseDiagnosis('${wrong}')">
+
+🔎 ${wrong}
+
+</button>
+
+<button
+class="option"
+onclick="chooseDiagnosis('${wrong2}')">
+
+🔎 ${wrong2}
+
+</button>
+
+</div>
+
+<div id="diagResult"></div>
+
+</div>
+
+`;
+
+}
+
+function chooseDiagnosis(answer){
+
+let correct=
+answer===currentCase.failure;
+
+if(correct){
+
+xp+=15;
+
+document.getElementById(
+"diagResult"
+).innerHTML=`
+
+<div class="info"
+style="border:2px solid #27c76f">
+
+✅ Buen diagnóstico.
+
+</div>
+
+<button
+class="btn primary"
+onclick="openDevice()">
+
+🔬 ABRIR DISPOSITIVO
+
+</button>
+
+`;
+
+}else{
+
+money=Math.max(
+0,
+money-10
+);
+
+document.getElementById(
+"diagResult"
+).innerHTML=`
+
+<div class="info"
+style="border:2px solid #e34d4d">
+
+❌ Diagnóstico incorrecto.
+
+Ahora tendrás que encontrar la falla físicamente.
+
+</div>
+
+<button
+class="btn warning"
+onclick="openDevice()">
+
+🔬 INSPECCIONAR INTERNAMENTE
+
+</button>
+
+`;
+
+}
+
+save();
+
+}
+
+/* =========================================================
+   VISTA INTERNA
+========================================================= */
+
+function openDevice(){
+
+showScreen("stageScreen");
+
+let c=currentCase;
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🔬 Interior del ${c.device.name}
+</h1>
+
+<p>
+Ahora puedes observar las piezas.
+Haz clic sobre una para inspeccionarla.
+</p>
+
+<div class="deviceInterior">
+
+${c.device.parts
+.map((p,i)=>`
+
+<div
+class="internalPart p${(i%7)+1}"
+onclick="inspectPart('${p[0]}',this)">
+
+<div class="partIcon">
+${p[1]}
+</div>
+
+<div class="partName">
+${p[2]}
+</div>
+
+</div>
+
+`).join("")}
+
+</div>
+
+<div id="inspection"></div>
+
+<button
+class="btn primary"
+onclick="startScrews()">
+
+🪛 COMENZAR DESMONTAJE
+
+</button>
+
+</div>
+
+`;
+
+}
+
+function inspectPart(id,el){
+
+document
+.querySelectorAll(".internalPart")
+.forEach(x=>
+x.classList.remove("selected")
+);
+
+el.classList.add("selected");
+
+let p=
+currentCase.device.parts
+.find(x=>x[0]===id);
+
+let suspicious=
+currentCase.target[0]===id;
+
+document.getElementById(
+"inspection"
+).innerHTML=`
+
+<div class="info">
+
+<h3>
+🔍 ${p[1]} ${p[2]}
+</h3>
+
+<p>
+${suspicious
+?
+"⚠️ Esta pieza presenta señales que coinciden con la falla."
+:
+"Esta pieza parece estar en condiciones normales."
+}
+</p>
+
+</div>
+
+`;
+
+}
+
+/* =========================================================
+   TORNILLOS
+========================================================= */
+
+function startScrews(){
+
+showScreen("stageScreen");
+
+let amount=
+3+
+currentCase.difficulty;
+
+screws=0;
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🪛 Desmontaje
+</h1>
+
+<p>
+Retira los tornillos siguiendo el orden.
+</p>
+
+<div class="info">
+Tornillos:
+<b>
+<span id="screwCount">
+0
+</span>/${amount}
+</b>
+</div>
+
+<div class="screwGrid">
+
+${Array.from(
+{length:amount},
+(_,i)=>`
+
+<button
+class="screw"
+id="screw${i}"
+onclick="removeScrew(${i})">
+
+🪛
+<br>
+#${i+1}
+
+</button>
+
+`
+).join("")}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+function removeScrew(i){
+
+if(i!==screws){
+
+notify(
+"⚠️ Debes quitar primero el tornillo #"+
+(screws+1)
+);
+
+return;
+
+}
+
+document
+.getElementById("screw"+i)
+.classList.add("done");
+
+screws++;
+
+document.getElementById(
+"screwCount"
+).textContent=screws;
+
+let total=
+3+currentCase.difficulty;
+
+if(screws>=total){
+
+renderParts();
+
+}
+
+}
+
+/* =========================================================
+   DESMONTAJE
+========================================================= */
+
+function renderParts(){
+
+let c=currentCase;
+
+let next=
+c.disassembly[removed.length];
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🧩 Extracción de componentes
+</h1>
+
+<div class="info">
+
+Debes retirar primero:
+
+<b>
+${partName(next)}
+</b>
+
+<br>
+
+Orden:
+${removed.length+1}/${c.disassembly.length}
+
+</div>
+
+<div class="options">
+
+${c.parts.map(p=>`
+
+<button
+class="option"
+onclick="removePart('${p[0]}')">
+
+<div style="font-size:40px">
+${p[1]}
+</div>
+
+<b>
+${p[2]}
+</b>
+
+</button>
+
+`).join("")}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+function partName(id){
+
+let p=
+currentCase.device.parts
+.find(x=>x[0]===id);
+
+return p
+?
+p[1]+" "+p[2]
+:
+id;
+
+}
+
+function removePart(id){
+
+let required=
+currentCase.disassembly[
+removed.length
+];
+
+if(id!==required){
+
+notify(
+"❌ Orden incorrecto. Primero retira "+
+partName(required)
+);
+
+money=Math.max(
+0,
+money-5
+);
+
+save();
+
+return;
+
+}
+
+removed.push(id);
+
+if(
+removed.length===
+currentCase.disassembly.length
+){
+
+startRepair();
+
+}else{
+
+renderParts();
+
+}
+
+}
+
+/* =========================================================
+   REPARACIÓN
+========================================================= */
+
+function startRepair(){
+
+let c=currentCase;
+
+let neededMaterial=
+chooseMaterial(c);
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🛠️ Reparación
+</h1>
+
+<div class="info">
+
+<b>Falla principal:</b>
+${c.failure}
+
+<br>
+
+<b>Componente:</b>
+${c.target[1]}
+${c.target[2]}
+
+<br>
+
+<b>Material recomendado:</b>
+${MATERIALS[neededMaterial].icon}
+${MATERIALS[neededMaterial].name}
+
+${
+c.secondFailure
+?
+`
+<br><br>
+⚠️ <b>Falla secundaria:</b>
+${c.secondFailure}
+`
+:""
+}
+
+</div>
+
+<h2>
+🎒 Material necesario
+</h2>
+
+<div class="material">
+
+<div class="icon">
+${MATERIALS[neededMaterial].icon}
+</div>
+
+<b>
+${MATERIALS[neededMaterial].name}
+</b>
+
+<br>
+
+Cantidad:
+1
+
+<br><br>
+
+Disponible:
+${inventory[neededMaterial]||0}
+
+</div>
+
+<br>
+
+<button
+class="btn primary"
+onclick="repair('${neededMaterial}')">
+
+🔧 REPARAR
+
+</button>
+
+<button
+class="btn warning"
+onclick="openSupplyRace('${neededMaterial}')">
+
+🏁 CONSEGUIR MATERIAL
+
+</button>
+
+<div id="repairArea"></div>
+
+</div>
+
+`;
+
+}
+
+function chooseMaterial(c){
+
+let name=
+c.target[2].toLowerCase();
+
+if(
+name.includes("bater")
+)
+return"battery";
+
+if(
+name.includes("pantalla")||
+name.includes("panel")
+)
+return"screen";
+
+if(
+name.includes("led")
+)
+return"led";
+
+if(
+name.includes("fuente")
+)
+return"fuse";
+
+if(
+name.includes("placa")||
+name.includes("puerto")||
+name.includes("conector")
+)
+return"connector";
+
+if(
+name.includes("ventilador")||
+name.includes("procesador")
+)
+return"thermal";
+
+if(
+name.includes("cable")
+)
+return"cable";
+
+return"alcohol";
+
+}
+
+function repair(material){
+
+if(
+!inventory[material]||
+inventory[material]<1
+){
+
+notify(
+"❌ No tienes este material. Ve a la carrera de suministros."
+);
+
+return;
+
+}
+
+inventory[material]--;
+
+repairProgress=0;
+
+document.getElementById(
+"repairArea"
+).innerHTML=`
+
+<div class="info">
+
+<h3>
+🔧 Reparación manual
+</h3>
+
+<p>
+Realiza 10 acciones técnicas.
+</p>
+
+<div class="progress">
+
+<div id="repairBar">
+</div>
+
+</div>
+
+<h2>
+<span id="repairNumber">
+0
+</span>/10
+</h2>
+
+<button
+class="btn primary"
+onclick="repairAction()">
+
+⚙️ REALIZAR ACCIÓN
+
+</button>
+
+</div>
+
+`;
+
+save();
+
+}
+
+function repairAction(){
+
+repairProgress++;
+
+document.getElementById(
+"repairBar"
+).style.width=
+repairProgress*10+"%";
+
+document.getElementById(
+"repairNumber"
+).textContent=
+repairProgress;
+
+if(repairProgress>=10){
+
+xp+=25;
+
+save();
+
+setTimeout(
+startAssembly,
+500
+);
+
+}
+
+}
+
+/* =========================================================
+   ENSAMBLAJE
+========================================================= */
+
+function startAssembly(){
+
+let c=currentCase;
+
+placed=[];
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🧩 Reensamblaje
+</h1>
+
+<p>
+Ahora debes colocar cada pieza en su sitio.
+No basta con seleccionarla:
+<b>debes arrastrarla.</b>
+</p>
+
+<div class="info">
+
+Próxima pieza:
+
+<b id="nextAssembly">
+${partName(c.assembly[0])}
+</b>
+
+</div>
+
+<div
+class="dragParts">
+
+${c.parts.map(p=>`
+
+<div
+class="dragPart"
+draggable="true"
+id="drag_${p[0]}"
+data-part="${p[0]}">
+
+<div style="font-size:35px">
+${p[1]}
+</div>
+
+<b>
+${p[2]}
+</b>
+
+</div>
+
+`).join("")}
+
+</div>
+
+<h3>
+🧰 Posiciones
+</h3>
+
+<div class="assembly">
+
+${c.assembly.map((id,i)=>{
+
+let p=
+c.device.parts.find(
+x=>x[0]===id
+);
+
+return`
+
+<div
+class="slot"
+data-slot="${id}"
+ondragover="event.preventDefault()"
+ondrop="dropPart(event)">
+
+<div style="font-size:35px">
+${p[1]}
+</div>
+
+${p[2]}
+
+<br>
+
+<small>
+Posición ${i+1}
+</small>
+
+</div>
+
+`;
+
+}).join("")}
+
+</div>
+
+</div>
+
+`;
+
+document
+.querySelectorAll(".dragPart")
+.forEach(el=>{
+
+el.addEventListener(
+"dragstart",
+e=>{
+
+e.dataTransfer.setData(
+"text/plain",
+el.dataset.part
+);
+
+}
+);
+
+});
+
+}
+
+function dropPart(e){
+
+e.preventDefault();
+
+let id=
+e.dataTransfer.getData(
+"text/plain"
+);
+
+let required=
+currentCase.assembly[
+placed.length
+];
+
+if(id!==required){
+
+notify(
+"❌ Esa pieza todavía no va ahí."
+);
+
+return;
+
+}
+
+if(
+e.currentTarget.dataset.slot!==id
+){
+
+notify(
+"❌ Esa no es su posición."
+);
+
+return;
+
+}
+
+e.currentTarget.classList.add("ok");
+
+e.currentTarget.innerHTML=`
+
+<div style="font-size:35px">
+${partName(id).split(" ")[0]}
+</div>
+
+<b>
+${partName(id).substring(
+partName(id).indexOf(" ")+1
+)}
+</b>
+
+<br>
+
+✅ INSTALADO
+
+`;
+
+let drag=
+document.getElementById(
+"drag_"+id
+);
+
+if(drag)
+drag.remove();
+
+placed.push(id);
+
+if(
+placed.length===
+currentCase.assembly.length
+){
+
+xp+=40;
+
+save();
+
+setTimeout(
+startTests,
+500
+);
+
+}else{
+
+document.getElementById(
+"nextAssembly"
+).textContent=
+partName(
+currentCase.assembly[
+placed.length
+]
+);
+
+}
+
+}
+
+/* =========================================================
+   PRUEBAS
+========================================================= */
+
+function startTests(){
+
+let c=currentCase;
+
+tests=[];
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card">
+
+<h1>
+🧪 Banco de pruebas
+</h1>
+
+<p>
+Ahora debes demostrar que el dispositivo funciona.
+</p>
+
+<div id="tests">
+
+${c.device.tests.map(
+(t,i)=>`
+
+<div
+class="test"
+id="test${i}">
+
+<b>
+${t}
+</b>
+
+<button
+class="btn"
+onclick="runTest(${i})">
+
+PROBAR
+
+</button>
+
+</div>
+
+`).join("")}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+function runTest(i){
+
+if(tests.includes(i))
+return;
+
+tests.push(i);
+
+document
+.getElementById("test"+i)
+.classList.add("ok");
+
+document.getElementById(
+"test"+i
+).innerHTML=`
+
+<b>
+${currentCase.device.tests[i]}
+</b>
+
+<b style="color:#28d76f">
+✅ CORRECTO
+</b>
+
+`;
+
+if(
+tests.length===
+currentCase.device.tests.length
+){
+
+setTimeout(
+finishCase,
+600
+);
+
+}
+
+}
+
+/* =========================================================
+   FINAL
+========================================================= */
+
+function finishCase(){
+
+let c=currentCase;
+
+xp+=c.rewardXP;
+
+money+=c.rewardMoney;
+
+level=Math.min(
+500,
+level+1
+);
+
+save();
+
+document.getElementById(
+"stageContent"
+).innerHTML=`
+
+<div class="card"
+style="text-align:center">
+
+<div style="font-size:90px">
+🏆
+</div>
+
+<h1>
+¡REPARACIÓN COMPLETADA!
+</h1>
+
+<h2>
+${c.device.icon}
+${c.device.name}
+</h2>
+
+<div class="info">
+
+⭐ +${c.rewardXP} XP
+
+<br>
+
+💰 +$${c.rewardMoney}
+
+<br>
+
+🎯 Próximo nivel:
+${level}
+
+</div>
+
+<button
+class="btn success"
+onclick="goWorkshop()">
+
+🔧 SIGUIENTE CASO
+
+</button>
+
+</div>
+
+`;
+
+}
+
+/* =========================================================
+   CARRERA DE SUMINISTROS
+========================================================= */
+
+let raceRunning=false;
+
+let raceScore=0;
+
+let raceRequiredMaterial=null;
+
+let racePlayer={
+x:450,
+y:430
+};
+
+let raceItems=[];
+
+let raceObstacles=[];
+
+let raceAnimation;
+
+function openSupplyRace(material=null){
+
+raceRequiredMaterial=material;
+
+showScreen("raceScreen");
+
+startRace();
+
+}
+
+function startRace(){
+
+raceRunning=true;
+
+raceScore=0;
+
+racePlayer={
+x:450,
+y:430
+};
+
+raceItems=[];
+
+raceObstacles=[];
+
+for(let i=0;i<20;i++){
+
+let keys=
+Object.keys(MATERIALS);
+
+let type=
+raceRequiredMaterial||
+keys[
+Math.floor(
+Math.random()*keys.length
+)
+];
+
+raceItems.push({
+
+x:30+
+Math.random()*840,
+
+y:-Math.random()*4000,
+
+type
+
+});
+
+}
+
+for(let i=0;i<30;i++){
+
+raceObstacles.push({
+
+x:30+
+Math.random()*840,
+
+y:-Math.random()*5000,
+
+type:
+Math.random()>.5
+?"🛑"
+:"🪨"
+
+});
+
+}
+
+document.getElementById(
+"raceScore"
+).textContent="0";
+
+requestAnimationFrame(
+raceLoop
+);
+
+}
+
+function raceLoop(){
+
+if(!raceRunning)
+return;
+
+let canvas=
+document.getElementById(
+"raceCanvas"
+);
+
+let ctx=
+canvas.getContext("2d");
+
+ctx.clearRect(
+0,0,
+canvas.width,
+canvas.height
+);
+
+/* carretera */
+
+ctx.fillStyle="#151d29";
+
+ctx.fillRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+/* bordes */
+
+ctx.fillStyle="#263447";
+
+ctx.fillRect(
+0,0,
+35,
+500
+);
+
+ctx.fillRect(
+865,0,
+35,
+500
+);
+
+/* líneas */
+
+ctx.fillStyle="#ffffff33";
+
+for(
+let y=-50;
+y<550;
+y+=80
+){
+
+ctx.fillRect(
+445,
+y,
+10,
+40
+);
+
+}
+
+/* objetos */
+
+raceItems.forEach(
+x=>x.y+=5
+);
+
+raceObstacles.forEach(
+x=>x.y+=6
+);
+
+/* materiales */
+
+ctx.font="34px Arial";
+
+raceItems.forEach(
+item=>{
+
+ctx.fillText(
+MATERIALS[item.type].icon,
+item.x,
+item.y
+);
+
+});
+
+/* obstáculos */
+
+ctx.font="38px Arial";
+
+raceObstacles.forEach(
+o=>{
+
+ctx.fillText(
+o.type,
+o.x,
+o.y
+);
+
+});
+
+/* jugador */
+
+ctx.font="45px Arial";
+
+ctx.fillText(
+"🏃",
+racePlayer.x,
+racePlayer.y
+);
+
+/* recoger */
+
+raceItems=
+raceItems.filter(
+item=>{
+
+let hit=
+Math.abs(
+item.x-racePlayer.x
+)<40 &&
+Math.abs(
+item.y-racePlayer.y
+)<45;
+
+if(hit){
+
+raceScore++;
+
+inventory[item.type]=
+(inventory[item.type]||0)+1;
+
+document.getElementById(
+"raceScore"
+).textContent=
+raceScore;
+
+notify(
+"📦 +1 "+
+MATERIALS[item.type].name
+);
+
+save();
+
+return false;
+
+}
+
+return true;
+
+});
+
+/* obstáculos */
+
+for(
+let o of raceObstacles
+){
+
+if(
+Math.abs(
+o.x-racePlayer.x
+)<40 &&
+Math.abs(
+o.y-racePlayer.y
+)<50
+){
+
+racePlayer.x=450;
+
+racePlayer.y=430;
+
+money=Math.max(
+0,
+money-5
+);
+
+notify(
+"💥 Chocaste. Perdiste $5."
+);
+
+save();
+
+}
+
+}
+
+/* ganar */
+
+if(raceScore>=20){
+
+raceRunning=false;
+
+cancelAnimationFrame(
+raceAnimation
+);
+
+xp+=100;
+
+money+=50;
+
+save();
+
+setTimeout(
+()=>{
+alert(
+"🏁 ¡CARRERA COMPLETADA!\n\n"+
+"Conseguiste 20 materiales.\n"+
+"Tu taller ha recibido una bonificación."
+);
+
+goWorkshop();
+
+},
+300
+);
+
+return;
+
+}
+
+raceAnimation=
+requestAnimationFrame(
+raceLoop
+);
+
+}
+
+document.addEventListener(
+"keydown",
+e=>{
+
+if(!raceRunning)
+return;
+
+if(e.key==="ArrowLeft")
+racePlayer.x-=8;
+
+if(e.key==="ArrowRight")
+racePlayer.x+=8;
+
+if(e.key==="ArrowUp")
+racePlayer.y-=5;
+
+if(e.key==="ArrowDown")
+racePlayer.y+=5;
+
+racePlayer.x=
+Math.max(
+45,
+Math.min(
+850,
+racePlayer.x
+)
+);
+
+racePlayer.y=
+Math.max(
+40,
+Math.min(
+480,
+racePlayer.y
+)
+);
+
+});
+
+function stopRace(){
+
+raceRunning=false;
+
+cancelAnimationFrame(
+raceAnimation
+);
+
+goWorkshop();
+
+}
+
+/* =========================================================
+   INVENTARIO
+========================================================= */
+
+function openInventory(){
+
+let html=`
+
+<h1>
+🎒 Inventario del taller
+</h1>
+
+<p>
+Estos son los materiales que tienes disponibles.
+</p>
+
+<div class="inventory">
+
+`;
+
+Object.keys(MATERIALS)
+.forEach(key=>{
+
+html+=`
+
+<div class="material">
+
+<div class="icon">
+${MATERIALS[key].icon}
+</div>
+
+<b>
+${MATERIALS[key].name}
+</b>
+
+<br><br>
+
+Cantidad:
+
+<strong>
+${inventory[key]||0}
+</strong>
+
+</div>
+
+`;
+
+});
+
+html+=`
+
+</div>
+
+`;
+
+document.getElementById(
+"modalContent"
+).innerHTML=html;
+
+document.getElementById(
+"modal"
+).classList.add("show");
+
+}
+
+function closeModal(){
+
+document.getElementById(
+"modal"
+).classList.remove("show");
+
+}
+
+/* =========================================================
+   MAPA
+========================================================= */
+
+function showMap(){
+
+showScreen("mapScreen");
+
+let map=
+document.getElementById(
+"levelMap"
+);
+
+map.innerHTML="";
+
+for(
+let i=1;
+i<=500;
+i++
+){
+
+let div=
+document.createElement("div");
+
+div.className="level";
+
+if(i<level)
+div.classList.add("done");
+
+if(i===level)
+div.classList.add("current");
+
+div.textContent=i;
+
+map.appendChild(div);
+
+}
+
+}
+
+/* =========================================================
+   PANTALLAS
+========================================================= */
+
+function showScreen(id){
+
+document
+.querySelectorAll(".screen")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+function goWorkshop(){
+
+showScreen(
+"workshopScreen"
+);
+
+setupWorkshop();
+
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+function notify(text){
+
+let t=
+document.getElementById("toast");
+
+t.textContent=text;
+
+t.classList.add("show");
+
+clearTimeout(
+toastTimer
+);
+
+toastTimer=
+setTimeout(
+()=>{
+t.classList.remove("show");
+},
+2200
+);
+
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+function resetGame(){
+
+if(
+!confirm(
+"¿Quieres borrar TODO tu progreso?"
+)
+)
+return;
+
+localStorage.removeItem(
+"FIXLAB_LEVEL"
+);
+
+localStorage.removeItem(
+"FIXLAB_XP"
+);
+
+localStorage.removeItem(
+"FIXLAB_MONEY"
+);
+
+localStorage.removeItem(
+"FIXLAB_MATERIALS"
+);
+
+location.reload();
+
+}
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+updateStats();
+
+setupWorkshop();
+
+</script>
+
+</body>
+</html>
